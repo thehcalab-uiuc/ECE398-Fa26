@@ -1,3 +1,4 @@
+import pybullet
 import numpy as np
 from .urdf_object import URDFObject
 
@@ -7,6 +8,7 @@ class Quadrotor(URDFObject):
         super().__init__('robot/urdfs/drone/quadrotor.urdf', position=position, rotation=rotation, fixedBase=False)
         dynamicsInfo = self.getDynamicsInfo()
         self.mass = dynamicsInfo['mass']
+        self.drag = 0.01
         self.armLength = 0.175
         self.inertia = np.diag(dynamicsInfo['local_inertia_diag'])
     
@@ -23,3 +25,8 @@ class Quadrotor(URDFObject):
         self.applyForce(-1, [0.0, 0.0, forces[1]], [ self.armLength,  0.0, 0.0], 'link')
         self.applyForce(-1, [0.0, 0.0, forces[2]], [ 0.0, -self.armLength, 0.0], 'link')
         self.applyForce(-1, [0.0, 0.0, forces[3]], [-self.armLength,  0.0, 0.0], 'link')
+
+        self.applyTorque(-1, [0.0, 0.0,  self.drag * forces[0]], 'link')
+        self.applyTorque(-1, [0.0, 0.0, -self.drag * forces[1]], 'link')
+        self.applyTorque(-1, [0.0, 0.0,  self.drag * forces[2]], 'link')
+        self.applyTorque(-1, [0.0, 0.0, -self.drag * forces[3]], 'link')

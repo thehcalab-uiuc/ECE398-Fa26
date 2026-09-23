@@ -59,7 +59,7 @@ class URDFObject:
 
     def setBaseColor(self, rgba=(1,1,1,1)):
         """ Set the base color to the provided RGBA color """
-        pybullet.changeVisualShape(self._objectID, -1, rgbaColor=rgba)
+        pybullet.changeVisualShape(self._objectID, -1,rgbaColor=rgba)
 
     def applyForce(self, linkIndex, force, position, frame='world'):
         """ Apply a force at given link
@@ -73,17 +73,16 @@ class URDFObject:
             raise ValueError("Frame '{}' not valid for applying force".format(frame))
         pybullet.applyExternalForce(self._objectID, linkIndex, force, position, pybullet.WORLD_FRAME if frame == 'world' else pybullet.LINK_FRAME)
 
-    def applyTorque(self, linkIndex, torque, position, frame='world'):
+    def applyTorque(self, linkIndex, torque, frame='world'):
         """ Apply a torque at given link
         
         :param linkIndex: index of link
         :param torque: torque (x,y,z)
-        :param position: position to apply torque (x,y,z)
         :param frame: world or link
         """
         if frame not in ['world', 'link']:
-            raise ValueError("Frame '{}' not valid for applying force".format(frame))
-        pybullet.applyExternalForce(self._objectID, linkIndex, torque, position, pybullet.WORLD_FRAME if frame == 'world' else pybullet.LINK_FRAME)
+            raise ValueError("Frame '{}' not valid for applying torque".format(frame))
+        pybullet.applyExternalTorque(self._objectID, linkIndex, torque, pybullet.WORLD_FRAME if frame == 'world' else pybullet.LINK_FRAME)
     
     def getJoints(self):
         """ Retrieve the joints of the object """
