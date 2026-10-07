@@ -10,7 +10,7 @@ MAX_ANGULAR_SPEED = 1.0
 
 
 class R2D2(URDFObject):
-    def __init__(self, position=(0.0,0.0,0.0), rotation=(0.0,0.0,0.0,1.0)):
+    def __init__(self, position=(0.0,0.0,0.0), rotation=(0.0,0.0,0.0,1.0), cameraWidth=640, cameraHeight=480):
         super().__init__('r2d2.urdf', position=position, rotation=rotation, fixedBase=False)
         self.controller = DifferentialDrive(
             self,
@@ -22,7 +22,7 @@ class R2D2(URDFObject):
             wheelRadiusMultiplier=1.0
         )
         self.camera = Camera(
-            width=640, height=480, fov=60.0, nearClip=0.01, farClip=10.0
+            width=cameraWidth, height=cameraHeight, fov=60.0, nearClip=0.01, farClip=10.0
         )
 
     def tick(self, deltaTime):
