@@ -86,7 +86,7 @@ $$
 $$
 and
 $$
-\Sigma^{t|t} = (I - K^{t} H^{t}) P^{t|t-1}
+\Sigma^{t|t} = (I - K^{t} H^{t}) \Sigma^{t|t-1}
 $$
 
 
