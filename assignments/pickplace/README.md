@@ -1,6 +1,6 @@
 # Lab 6 - Logistic Classification and Pick n Place
 
-In this lab assignment, you will apply what you learned about learning/inferencing to perform classification of objects for a pick and place task with a robot manipulator.
+In this lab assignment, you will apply what you learned about probability and inferencing to perform classification of objects for a pick and place task with a robot manipulator.
 
 The manipulator is intended to place a provided object in the correct bin; it will be presented either a mug or a LEGO brick. It should decide what class the object belongs to (mug or LEGO) and then place it into a specific bin depending on what class the object was. To do this, we will use a *logistic regression classifier* that allows us to learn from data how to decide which class the object belongs to.
 
@@ -8,7 +8,7 @@ The manipulator is intended to place a provided object in the correct bin; it wi
 
 Logistic regression is a common way of performing the task of binary classification -- that is, deciding which of two classes a given input belongs to. Specifically, logistic regression can be thought of as dividing the input data into two classes using a linear decision boundary.
 
-Data is assumed to be able to be divided into two classes: $0$ and $1$. The logistic regression classifier takes as input a vector of features $\mathbf{x}$ and is parameterized by a weight vector $\mathbf{w}$ and bias $b$. The classifier produces an output $f(\mathbf{x})=\sigma(\mathbf{w}^T \mathbf{x}+b)=p \in [0,1]$, where $p$ can be thought of as the probability that the classifier thinks that the provided $\mathbf{x}$ belongs to class $1$ (so the probability it belongs to class $0$ is $1-p$). The function $\sigma(z) = \frac{1}{1+e^{-x}}$ is known as the *sigmoid* function (or the *logistic* function), and is very common in fields like deep learning.
+Data is assumed to be able to be divided into two classes: $0$ and $1$. The logistic regression classifier takes as input a vector of features $\mathbf{x}$ and is parameterized by a weight vector $\mathbf{w}$ and bias $b$. The classifier produces an output $f(\mathbf{x})=\sigma(\mathbf{w}^T \mathbf{x}+b)=p \in [0,1]$, where $p$ can be thought of as the probability that the classifier thinks that the provided $\mathbf{x}$ belongs to class $1$ (so the probability it belongs to class $0$ is $1-p$). The function $\sigma(z) = \frac{1}{1+e^{-z}}$ is known as the *sigmoid* function (or the *logistic* function), and is very common in fields like deep learning.
 
 For our implementation, we will assume that $\mathbf{x}$ is a vector consisting of RGB pixels (with values in $[0,1]$) from a flattened input image from a camera. We also append a $1$ to the end of $\mathbf{x}$; this allows us to use the form $f(\mathbf{x})=\sigma(\mathbf{w}^T \mathbf{x})$ rather than $f(\mathbf{x})=\sigma(\mathbf{w}^T \mathbf{x}+b)$, which makes it simpler/cleaner to work with. If we assume our images are of resolution $H \times W$, our images correspond to $M=H \cdot W \cdot 3$ floating point values (the 3 is due to images being RGB). Similarly, we have that $\mathbf{x} \in [0,1]^{M+1}$ and $\mathbf{w} \in \mathbb{R}^{M+1}$.
 
@@ -30,11 +30,11 @@ We'd like to ultimately pick the $\mathbf{w}$ that maximizes the probability of 
 $$
 \begin{align}
 \min_{\mathbf{w}} \{-\ln p(y_1, ...y_N | \mathbf{x}_1,...,\mathbf{x}_N)\} &= \min_{\mathbf{w}} \{-\ln \prod_{i \in \{1, ..., N\}} \sigma(\mathbf{w}^T\mathbf{x}_i)^{y_i} [1-\sigma(\mathbf{w}^T\mathbf{x}_i)]^{1-y_i} \} \\
-&=\min_{\mathbf{w}} \{-\sum_{i \in \{1, ..., N\}} (y_i \ \ln[\sigma(\mathbf{w}^T\mathbf{x}_i)] + (1-y_i) \ln[1-\sigma(\mathbf{w}^T\mathbf{x}_i)])\}
+&=\min_{\mathbf{w}} \{-\sum_{i \in \{1, ..., N\}} (y_i \ln[\sigma(\mathbf{w}^T\mathbf{x}_i)] + (1-y_i) \ln[1-\sigma(\mathbf{w}^T\mathbf{x}_i)])\}
 \end{align}
 $$
 
-If we denote $p_i = \sigma(\mathbf{w}^T\mathbf{x}_i)$, then the final sum to be minimized can be written $-\sum_{i \in \{1, ..., N\}}[y_i  \ \ln p_i + (1-y_i) \ln (1-p_i)]$. This form is often known as the cross-entropy loss function in machine learning.
+If we denote $p_i = \sigma(\mathbf{w}^T\mathbf{x}_i)$, then the final sum to be minimized can be written $-\sum_{i \in \{1, ..., N\}}[y_i \ln p_i + (1-y_i) \ln (1-p_i)]$. This form is often known as the cross-entropy loss function in machine learning.
 
 While some basic machine learning methods (including ones you've seen before, like linear least squares regression) have closed form solutions, logistic regression in general doesn't have a closed form expression for its solution to the minimization. However, we note that the loss function is differentiable with respect to $\mathbf{w}$ and so we can use an approach known as gradient descent.
 
