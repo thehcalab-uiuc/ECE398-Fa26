@@ -161,7 +161,9 @@ class GridWorldSimulation:
                 elif action == Action.RIGHT:
                     positionTarget = self.cellToPosition(currentCellLocation[0], currentCellLocation[1]+1)
                 else:
-                    positionTarget = None
+                    self.sendCommand(0.0, 0.0)
+                    self.done = True
+                    return
                 self._controlTarget = {'position': positionTarget, 'angle': None}
                 self._controlState = CONTROL_STATE.MOVE
         elif self._controlState == CONTROL_STATE.MOVE:
