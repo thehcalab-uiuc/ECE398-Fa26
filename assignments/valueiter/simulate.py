@@ -135,7 +135,9 @@ class GridWorldSimulation:
                 elif action == Action.RIGHT:
                     angleTarget = 0.0
                 else:
-                    angleTarget = None
+                    self.sendCommand(0.0, 0.0)
+                    self.done = True
+                    return
                 self._controlTarget = {'position': None, 'angle': angleTarget}
                 self._controlState = CONTROL_STATE.REORIENT
         elif self._controlState == CONTROL_STATE.REORIENT:
