@@ -57,7 +57,7 @@ $$
 $$
 Then, the specific optimization problem is defined as
 $$
-\min_{\mathbf{r},\mathbf{t}} \sum_{i \in \{1,...,N\}} [([f_x \frac{x_\text{camera}^i}{z_\text{camera}^i}+c_x] - u^i_\text{image})^2 + ([f_y \frac{y_\text{camera}^i}{z_\text{camera}^i}+c_x] - v^i_\text{image})^2]
+\min_{\mathbf{r},\mathbf{t}} \sum_{i \in \{1,...,N\}} [([f_x \frac{x_\text{camera}^i}{z_\text{camera}^i}+c_x] - u^i_\text{image})^2 + ([f_y \frac{y_\text{camera}^i}{z_\text{camera}^i}+c_y] - v^i_\text{image})^2]
 $$
 where we note that the $x_\text{camera}^i$, $y_\text{camera}^i$, and $z_\text{camera}^i$ are functions of $R$ and $\mathbf{t}$, and $\mathbf{r}$ is just the 3-dimensional vector that describes the same rotation as $R$.
 
