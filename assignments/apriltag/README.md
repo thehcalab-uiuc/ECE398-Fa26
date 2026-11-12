@@ -65,7 +65,7 @@ The optimization problem clearly has the form of non-linear least squares (NLS) 
 
 Recall that in the Levenberg-Marquardt algorithm, we calculate our steps using:
 $$
-(\mathbf{J}^T \mathbf{J})\Delta = \mathbf{J}^T \mathbf{e}
+(\mathbf{J}^T \mathbf{J} + \lambda I)\Delta = \mathbf{J}^T \mathbf{e}
 $$
 where $\mathbf{e}$ is our prediction residuals and $\mathbf{J}$ is our Jacobian.
 
